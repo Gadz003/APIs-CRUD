@@ -3,22 +3,24 @@ import 'dotenv/config';
 
 const conexao = async () => {
     const URI = process.env.MONGO;
+    if (!URI) {
+        throw new Error("Variável MONGO não definida no .env");
+    }
     const client = new MongoClient(URI);
-    const con = await client.connect();
+    await client.connect();
 
-    return con;
+    return client;
 }
 
 export const manipularDB = async (jogo, callback) => {
-    let resultado;
+    let con;
     try {
-        const con = await conexao();
-        resultado = await callback(con, jogo);
-        con.close();
+        con = await conexao();
+        return await callback(con, jogo);
     } catch (e) {
-        resultado = null;
         console.error(e.message);
+        return null;
     } finally {
-        return resultado;
+        if (con) await con.close().catch(() => {});
     }
 }
