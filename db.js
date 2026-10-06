@@ -9,11 +9,11 @@ const conexao = async () => {
     return con;
 }
 
-export const manipularDB = async (user, callback) => {
+export const manipularDB = async (jogo, callback) => {
     let resultado;
     try {
         const con = await conexao();
-        resultado = await callback(con, user);
+        resultado = await callback(con, jogo);
         con.close();
     } catch (e) {
         resultado = null;
