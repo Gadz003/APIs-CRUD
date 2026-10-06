@@ -1,18 +1,18 @@
 import express from 'express';
 import { manipularDB } from './db.js';
-import mongo from './mongodb.js';
+import mongo from './mongoDB.js';
 
 const app = express();
 app.use(express.json());
 
-app.get('/alunos', async (req, res) => {
+app.get('/jogos', async (req, res) => {
     try {
-        const alunos = await manipularDB({}, mongo.getUsuarios);
+        const jogos = await manipularDB({}, mongo.getJogos);
 
-        if (!alunos[0]){
-            res.status(404).json('Nenhum aluno encontrado no banco de dados!');
+        if (!jogos[0]){
+            res.status(404).json('Nenhum jogo encontrado no banco de dados!');
         } else {
-            res.status(200).json(alunos);
+            res.status(200).json(jogos);
         }
 
     } catch (e) {
@@ -20,86 +20,86 @@ app.get('/alunos', async (req, res) => {
     } 
 });
 
-app.get('/alunos/:id', async (req, res) => {
+app.get('/jogos/:id', async (req, res) => {
     const id = req.params.id;
 
     try {
-        const aluno = await manipularDB({ id }, mongo.getUsuario);
+        const jogo = await manipularDB({ id }, mongo.getJogo);
         
-        if (aluno == null) {
-            res.status(404).json('Aluno não encontrado no banco de dados!');
+        if (jogo == null) {
+            res.status(404).json('Jogo não encontrado no banco de dados!');
         } else {
-            res.status(200).json(aluno)
+            res.status(200).json(jogo)
         }
     } catch (e) {
         console.error(e.message)
     } 
 });
 
-app.post('/alunos', async (req, res) => {
+app.post('/jogos', async (req, res) => {
     try {
-        const aluno = req.body.aluno;
-        const todosOsAlunos = await manipularDB({}, mongo.getUsuarios);
+        const jogo = req.body.jogo;
+        const todosOsJogos = await manipularDB({}, mongo.getJogos);
         let valido = true;
 
-        for (let a of todosOsAlunos) {
-            if (a.email == aluno.email) {
+        for (let j of todosOsJogos) {
+            if (j.nome == jogo.nome) {
                 valido = false;
             }
         }
 
         if (valido) {
-            const alunoAdicionado = await manipularDB(aluno, mongo.createUsuario)
+            const jogoAdicionado = await manipularDB(jogo, mongo.createJogo)
     
-            if (alunoAdicionado == null) {
-                res.status(404).json('Não foi possível adicionar o aluno no banco de dados!');
+            if (jogoAdicionado == null) {
+                res.status(404).json('Não foi possível adicionar o jogo no banco de dados!');
             } else {
-                res.status(201).json(alunoAdicionado);
+                res.status(201).json(jogoAdicionado);
             }
         } else {
-            res.status(409).json(`O email ${aluno.email} já está registrado no banco de dados!`);
+            res.status(409).json(`O nome ${jogo.nome} já está registrado no banco de dados!`);
         }
     } catch (e) {
         console.error(e);
     }
 });
 
-app.delete('/alunos/:id', async (req, res) => {
+app.delete('/jogos/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        const resposta = await manipularDB({ id }, mongo.deleteUsuario);
+        const resposta = await manipularDB({ id }, mongo.deleteJogo);
     
         if (resposta == null) {
-            res.status(404).json('Aluno não encontrado no banco de dados!');
+            res.status(404).json('Jogo não encontrado no banco de dados!');
         } else {
-            res.status(200).json(`Aluno ${id} deletado do banco de dados!`);
+            res.status(200).json(`Jogo ${id} deletado do banco de dados!`);
         }
     } catch (e) {
         console.error(e.message)
     }
-})
+});
 
-app.put('/alunos/:id', async (req, res) => {
+app.put('/jogos/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        const aluno = req.body.aluno;
-        const alunoExistente = await manipularDB({ id }, mongo.getUsuario)
-    
-        if (alunoExistente == null) {
-            res.status(404).json('Aluno não encontrado no banco de dados!');
+        const jogo = req.body.jogo;
+        const jogoExistente = await manipularDB({ id }, mongo.getJogo)
+
+        if (jogoExistente == null) {
+            res.status(404).json('Jogo não encontrado no banco de dados!');
         } else {
-            for (let [chave, valor] of Object.entries(aluno)){
+            for (let [chave, valor] of Object.entries(jogo)){
                 if (valor == ''){
-                    delete alunoExistente[chave];
+                    delete jogoExistente[chave];
                 } else {
-                    alunoExistente[chave] = valor;
+                    jogoExistente[chave] = valor;
                 }
             }
     
-            delete alunoExistente._id;
-            alunoExistente.id = id;
+            delete jogoExistente._id;
+            jogoExistente.id = id;
     
-            const resposta = await manipularDB(alunoExistente, mongo.attUsuario)
+            const resposta = await manipularDB(jogoExistente, mongo.attJogo)
             res.status(200).json(resposta);
         } 
     } catch (e) {
