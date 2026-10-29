@@ -21,5 +21,11 @@ const attJogo = async (con, jogo) => {
     return `Jogo ${jogo.nome} atualizado no MongoDB!`;
 }
 
-const mongo = { getJogos, getJogo, createJogo, deleteJogo, attJogo };
+const getCompra = async (con, compra) => await con.db("LojaGames").collection("compras").findOne(compra);
+
+const createCompra = async (con, compra) => await con.db("LojaGames").collection("compras").insertOne(compra);
+
+const getCompras = async (con, compra) => await con.db("LojaGames").collection("compras").find(compra).toArray();
+
+const mongo = { getJogos, getJogo, createJogo, deleteJogo, attJogo, getCompra, createCompra, getCompras };
 export default mongo;
