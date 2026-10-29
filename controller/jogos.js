@@ -1,5 +1,5 @@
 import { manipularDB } from "../db.js";
-import mongo from "../mongoDB.js";
+import mongo from "../db/mongoDB.js";
 import { autenticarToken } from "../middlewares/auth.js";
 
 // Qualquer usuário (admin ou usuário comum) pode visualizar os jogos

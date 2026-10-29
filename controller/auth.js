@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import * as dbUsuarios from "../db/usuarios.js";
+import mongo from "../db/mongoDB.js";
 import { manipularDB } from "../db.js";
 import 'dotenv/config';
 
@@ -10,7 +10,7 @@ export const loginUsuario = async (req, res) => {
     const { email, senha } = req.body;
 
     try {
-        const usuario = await manipularDB({ email }, dbUsuarios.getUsuarioEmail);
+        const usuario = await manipularDB({ email }, mongo.getUsuarioEmail);
     
         if (!usuario) {
             return res.status(400).json("Email ou senha incorretos!");
