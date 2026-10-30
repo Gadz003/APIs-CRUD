@@ -10,10 +10,10 @@ routerJogos.get('/', getJogos);
 
 routerJogos.get('/:id', getJogo);
 
-routerJogos.post('/', autorizarAdmin, createJogo);
+routerJogos.post('/', autenticarToken, autorizarAdmin, createJogo);
 
-routerJogos.delete('/:id', autorizarAdmin, deleteJogo);
+routerJogos.delete('/:id', autenticarToken, autorizarAdmin, deleteJogo);
 
-routerJogos.put('/:id', autorizarAdmin, attJogo);
+routerJogos.put('/:id', autenticarToken, autorizarAdmin, attJogo);
 
 routerJogos.post('/:id/comprar', autenticarToken, comprarJogo);

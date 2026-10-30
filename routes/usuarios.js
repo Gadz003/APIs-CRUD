@@ -8,20 +8,20 @@ import {
     desativarUsuario,
     ativarUsuario
 } from "../controller/usuarios.js";
-import { autorizarAdmin, verificarId } from "../middlewares/auth.js";
+import { autenticarToken, autorizarAdmin, verificarId } from "../middlewares/auth.js";
 
 export const routerUsuario = express.Router()
 
-routerUsuario.get('/', autorizarAdmin, getUsuarios);
+routerUsuario.get('/', autenticarToken, autorizarAdmin, getUsuarios);
 
-routerUsuario.get('/:id', verificarId, getUsuario);
+routerUsuario.get('/:id', autenticarToken, verificarId, getUsuario);
 
-routerUsuario.post('/', autorizarAdmin, createUsuario);
+routerUsuario.post('/', autenticarToken, autorizarAdmin, createUsuario);
 
-routerUsuario.delete('/:id', autorizarAdmin, deleteUsuario)
+routerUsuario.delete('/:id', autenticarToken, autorizarAdmin, deleteUsuario);
 
-routerUsuario.put('/:id', verificarId, attUsuario);
+routerUsuario.put('/:id', autenticarToken, verificarId, attUsuario);
 
-routerUsuario.patch('/desativar/:id', verificarId, desativarUsuario)
+routerUsuario.patch('/desativar/:id', autenticarToken, verificarId, desativarUsuario);
 
-routerUsuario.patch('/ativar/:id', autorizarAdmin, ativarUsuario)
+routerUsuario.patch('/ativar/:id', autenticarToken, autorizarAdmin, ativarUsuario);
