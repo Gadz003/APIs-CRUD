@@ -12,11 +12,11 @@ import { autenticarToken, autorizarAdmin, verificarId } from "../middlewares/aut
 
 export const routerUsuario = express.Router()
 
-routerUsuario.get('/', autenticarToken, autorizarAdmin, getUsuarios);
+routerUsuario.get('/', autenticarToken, getUsuarios);
 
 routerUsuario.get('/:id', autenticarToken, verificarId, getUsuario);
 
-routerUsuario.post('/', autenticarToken, autorizarAdmin, createUsuario);
+routerUsuario.post('/', autenticarToken, createUsuario);
 
 routerUsuario.delete('/:id', autenticarToken, autorizarAdmin, deleteUsuario);
 
