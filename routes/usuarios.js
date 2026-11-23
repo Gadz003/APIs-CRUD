@@ -16,7 +16,7 @@ routerUsuario.get('/', autenticarToken, getUsuarios);
 
 routerUsuario.get('/:id', autenticarToken, verificarId, getUsuario);
 
-routerUsuario.post('/', autenticarToken, createUsuario);
+routerUsuario.post('/', createUsuario);
 
 routerUsuario.delete('/:id', autenticarToken, autorizarAdmin, deleteUsuario);
 
