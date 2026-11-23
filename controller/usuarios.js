@@ -86,7 +86,11 @@ export const attUsuario = async (req, res) => {
 };
 
 export const createUsuario = async (req, res) => {
-    const { email, senha, admin } = req.body.usuario;
+    const { email, senha, admin } = req.body.usuario || {};
+
+    if (!email || !senha) {
+        return res.status(400).json("Email e senha são obrigatórios!");
+    }
 
     try {
         const usuarioExiste = await manipularDB({ email }, mongo.getUsuarioEmail)
