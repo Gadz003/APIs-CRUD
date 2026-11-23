@@ -24,4 +24,5 @@ routerUsuario.put('/:id', autenticarToken, verificarId, attUsuario);
 
 routerUsuario.patch('/desativar/:id', autenticarToken, verificarId, desativarUsuario);
 
-routerUsuario.patch('/ativar/:id', autenticarToken, autorizarAdmin, ativarUsuario);
+routerUsuario.patch('/ativar/:id', autenticarToken, autorizarAdmin
+    , ativarUsuario);
